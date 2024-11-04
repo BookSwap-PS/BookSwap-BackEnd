@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,15 +25,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-4z1a90mk6@#embe6-)^!v5rbbvmy3bcgv&euhni6(p58l#iom0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.15.118','192.168.15.4','192.168.15.10','0f73-200-129-179-189.ngrok-free.app','0.0.0.0','10.10.31.132','10.90.8.67','bookswap-backend-production.up.railway.app']
+ALLOWED_HOSTS = ['10.10.28.102','0.0.0.0','192.168.15.7','127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -40,11 +41,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'rest_framework',
-    'materialdash',
-    'materialdash.admin',
+    # 'materialdash',
+    # 'materialdash.admin',
     'django_filters'
     
 ]
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),  # Token de acesso válido por 5 minutos
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),    # Token de atualização válido por 1 dia
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
 
 REST_FRAMEWORK = {
     'DATE_FORMAT': "%d/%m/%Y",
@@ -83,8 +91,14 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'bookswap.wsgi.application'
+# WSGI_APPLICATION = 'bookswap.wsgi.application'
+ASGI_APPLICATION = 'bookswap.asgi.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -144,6 +158,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
