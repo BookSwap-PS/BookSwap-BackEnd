@@ -1,6 +1,8 @@
 /venv
 # Ignorar arquivos .pyc
 *.pyc
-
+static/admin/
 # Ignorar diretórios __pycache__
 __pycache__/
+*.png
+media/
