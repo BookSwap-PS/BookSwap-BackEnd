@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 8000
 
 # Comando para rodar as migrações e iniciar o servidor
-CMD ["sh", "-c", "python manage.py migrate api && python manage.py collectstatic --no-input && gunicorn bookswap.asgi:application -k uvicorn_worker.UvicornWorker --reload"]
+CMD ["sh", "-c", "sudo daphne bookswap.asgi:application --port 80 --bind 0.0.0.0 -v2 --reload && sudo python manage.py runworker -v2"]
