@@ -79,6 +79,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'message': novaMensagem.conteudo,
                 'time': novaMensagem.dataEnvio.strftime("%Y-%m-%d %H:%M:%S"),
                 'sender_username': self.username,
+                'localId': text_data_json.get('localId', None),  # Inclui o localId se existir
             }
 
             # Log do payload antes de enviar
@@ -87,7 +88,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_send(
                 f'chat_{usuario.username}', payload
             )
-
+            
             # Adiciona o destinatário à lista de quem recebeu a mensagem
             if usuario != user:
                 await sync_to_async(novaMensagem.quemRecebeu.add)(usuario)
