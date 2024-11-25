@@ -13,7 +13,9 @@ router.register(r'usuario', UserViewSet)
 router.register(r'perfil', PerfilViewSet)
 router.register(r'comentario', ComentarioViewSet)  
 router.register(r'api/UserMessages',GetUserChatMessages, basename='GetUserMessages')
-router.register(r'chat-requests', ChatRequestViewSet, basename='chat-request')  # Registre o ChatRequestViewSet
+router.register(r'chat-requests', ChatRequestViewSet, basename='chat-request')
+router.register(r'chats', GetUserChatMessages, basename='chats')
+# Registre o ChatRequestViewSet
 # Definição das URLs
 urlpatterns = [
     path('', include(router.urls)),  # Inclui as rotas dos ViewSets

@@ -11,15 +11,26 @@ class GetUserChatMessages(viewsets.ViewSet, APIView):
     permission_classes = [IsAuthenticated]
 
     def list(self, request):
-        data = Chat.objects.filter(usuarios=request.user)
-        messages = ChatSerializer(data, many=True).data[0] if data else None
-        return Response(messages)
+        """
+        Retorna os chats do usuário com mensagens associadas.
+        """
+        chats = Chat.objects.filter(usuarios=request.user)
+        serialized_chats = ChatSerializer(chats, many=True).data
+        return Response(serialized_chats, status=status.HTTP_200_OK)
     
     def retrieve(self, request, *args, **kwargs):
-        id = kwargs.get('pk')
-        data = Chat.objects.filter(id=id)
-        messages = ChatSerializer(data, many=True).data[0] if data else None
-        return Response(messages)
+        """
+        Retorna as mensagens de um chat específico.
+        """
+        chat_id = kwargs.get('pk')
+        try:
+            chat = Chat.objects.get(id=chat_id, usuarios=request.user)
+        except Chat.DoesNotExist:
+            return Response({'erro': 'Chat não encontrado ou você não tem acesso a ele.'}, 
+                            status=status.HTTP_404_NOT_FOUND)
+
+        serialized_chat = ChatSerializer(chat).data
+        return Response(serialized_chat, status=status.HTTP_200_OK)
     def create(self, request, *args, **kwargs):
         # Método de criação de mensagens não permitido nesta view
         return Response({'mensagem': 'Não permitido!'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
