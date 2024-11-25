@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from api.models import ChatRequest
+from api.models import ChatRequest, Historico
 
 class ConcluirTrocaView(APIView):
     authentication_classes = [JWTAuthentication]
@@ -16,12 +16,21 @@ class ConcluirTrocaView(APIView):
                 return Response({'erro': 'A troca já foi concluída por ambas as partes'}, status=400)
 
             if request.user == troca.usuario or request.user == troca.usuarioDestino:
+                # Atualiza a troca como concluída
                 troca.trocaFeita = True
                 troca.usuario.perfil.atualizar_pontuacao()
                 troca.usuarioDestino.perfil.atualizar_pontuacao()
                 troca.save()
-                return Response({'mensagem': 'Troca concluída por ambas as partes'}, status=200)
 
+                # Cria um registro no modelo Historico
+                # Historico.objects.create(
+                #     usuario=troca.usuario,
+                #     usuarioDestino=troca.usuarioDestino,
+                #     livro=troca.livro,
+                #     mensagem=troca.mensagem
+                # )
+
+                return Response({'mensagem': 'Troca concluída por ambas as partes'}, status=200)
             else:
                 return Response({'erro': 'Você não tem permissão para concluir esta troca'}, status=403)
         except ChatRequest.DoesNotExist:

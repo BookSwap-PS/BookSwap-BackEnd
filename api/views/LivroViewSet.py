@@ -24,10 +24,19 @@ class LivroViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
-        # Se um parâmetro "meus_livros" for passado, filtramos para livros do usuário
+        """
+        Sobrescreve o método para adicionar filtros específicos
+        """
+        user_id = self.request.query_params.get('user')  # Obtém o ID do usuário da query string
         meus_livros = self.request.query_params.get('meus_livros', None)
-        if meus_livros and self.request.user.is_authenticated:
+
+        if user_id:  # Filtra os livros pelo dono (usuário específico)
+            return Livro.objects.filter(dono__id=user_id).order_by('-criado_em')
+
+        if meus_livros and self.request.user.is_authenticated:  # Filtra os livros do usuário autenticado
             return Livro.objects.filter(dono=self.request.user).order_by('-criado_em')
+
+        # Retorna todos os livros por padrão
         return super().get_queryset()
 
     def perform_create(self, serializer):

@@ -12,7 +12,7 @@ class PerfilSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Perfil
-        fields = ['id', 'usuario', 'image', 'seguindo', 'seguidores', 'criado_em', 'pontuacao_total', 'is_following','pontuacao']
+        fields = ['id', 'usuario', 'image', 'seguindo', 'seguidores', 'criado_em', 'pontuacao_total', 'is_following','pontuacao','nivel']
 
     def get_is_following(self, obj):
         request = self.context.get('request')

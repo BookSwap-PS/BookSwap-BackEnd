@@ -45,7 +45,7 @@ class ChatRequestViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        
+
         # Verifica se o usuário tem permissão para atualizar a solicitação
         if instance.usuarioDestino != request.user:
             return Response({'error': 'Você não tem permissão para atualizar esta solicitação.'}, status=status.HTTP_403_FORBIDDEN)
@@ -58,8 +58,19 @@ class ChatRequestViewSet(viewsets.ModelViewSet):
             instance.aceito = True
             instance.save()
             serializer = self.get_serializer(instance)
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             # Exclui a solicitação se for rejeitada
             instance.delete()
             return Response({'message': 'Solicitação rejeitada e excluída com sucesso.'}, status=status.HTTP_204_NO_CONTENT)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        # Verifica se o usuário tem permissão para excluir
+        if instance.usuario != request.user and instance.usuarioDestino != request.user:
+            return Response({'error': 'Você não tem permissão para excluir esta solicitação.'}, status=status.HTTP_403_FORBIDDEN)
+
+        # Remove a solicitação
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

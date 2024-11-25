@@ -6,3 +6,4 @@ from .ComentarioSerializer import ComentarioSerializer
 from .ChatMessagesSerializer import ChatMessagesSerializer
 from .ChatSerializer import ChatSerializer
 from .ChatRequestSerializer import ChatRequestSerializer
+from .HistoricoSerializer import HistoricoSerializer

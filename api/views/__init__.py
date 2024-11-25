@@ -6,3 +6,4 @@ from api.views.GetUserChatMessages import GetUserChatMessages
 from api.views.ChatRequestViewSet import ChatRequestViewSet
 from api.views.GetUserUsernameView import GetUserUsernameView
 from api.views.ConcluirTrocaView import ConcluirTrocaView
+from api.views.HistoricoTrocasView import HistoricoTrocasView

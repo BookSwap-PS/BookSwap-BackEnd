@@ -1,9 +1,13 @@
 from django.contrib import admin
-from api.models import Livro, Perfil, Chat, ChatMessages, ChatRequest
+from api.models import Livro, Perfil, Chat, ChatMessages, ChatRequest, Historico
 
 
 @admin.register(Livro)
 class LivroAdmin(admin.ModelAdmin):
+    icon_name = 'book'
+    
+@admin.register(Historico)
+class HistoricoAdmin(admin.ModelAdmin):
     icon_name = 'book'
 
 @admin.register(Perfil)

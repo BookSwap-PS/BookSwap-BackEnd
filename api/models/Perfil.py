@@ -8,6 +8,7 @@ class Perfil(models.Model):
     seguidores = models.ManyToManyField('Perfil', blank=True, related_name='Seguidores')
     criado_em = models.DateTimeField(auto_now_add=True)
     pontuacao = models.IntegerField(default=0)  # Campo para armazenar a pontuação do usuário
+    nivel = models.IntegerField(default=1)  # Campo para armazenar o nível do usuário
 
     def __str__(self):
         return f"{self.usuario.get_full_name()}"
@@ -32,6 +33,10 @@ class Perfil(models.Model):
     def atualizar_pontuacao(self):
         """
         Método para atualizar a pontuação do perfil com base na avaliação recebida.
+        A cada 5 pontos, o nível aumenta automaticamente.
         """
         self.pontuacao += 1
+        novo_nivel = (self.pontuacao // 5) + 1
+        if novo_nivel != self.nivel:
+            self.nivel = novo_nivel
         self.save()
