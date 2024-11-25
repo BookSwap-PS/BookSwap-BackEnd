@@ -14,7 +14,7 @@ services:
 
   web:
     build: .
-    command: sh -c "gunicorn bookswap.asgi:application -k uvicorn_worker.UvicornWorker --reload --host 0.0.0.0 --port 8000"
+    command: sh -c "python manage.py migrate && python manage.py collectstatic --no-input && gunicorn bookswap.asgi:application -k uvicorn_worker.UvicornWorker --reload"
     volumes:
       - .:/app
     ports:
