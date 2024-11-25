@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 8000
 
 # Comando para rodar as migrações e iniciar o servidor
-CMD ["sh", "-c", "gunicorn bookswap.asgi:application -k uvicorn_worker.UvicornWorker --reload --host 0.0.0.0 --port 8000"]
+CMD ["sh", "-c", "python manage.py migrate && gunicorn bookswap.asgi:application -k uvicorn_worker.UvicornWorker --reload"]
