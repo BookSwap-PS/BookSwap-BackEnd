@@ -95,29 +95,25 @@ TEMPLATES = [
 ASGI_APPLICATION = 'bookswap.asgi.application'
 
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
     },
 }
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'bookswap',
-#         'USER': 'root',
-#         'PASSWORD': 'ps2024bk',
-#         'HOST': 'db',
-#         'PORT': '5432',
-#     }
-# }
-
 DATABASES = {
     'default': {
-    'ENGINE': 'django.db.backends.sqlite3',
-    'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'bookswap',  # Nome do banco (POSTGRES_DB)
+        'USER': 'admin',     # Usuário (POSTGRES_USER)
+        'PASSWORD': 'password',  # Senha (POSTGRES_PASSWORD)
+        'HOST': '127.0.0.1', # Host onde o banco está rodando
+        'PORT': '5432',      # Porta do banco
     }
 }
 

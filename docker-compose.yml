@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: bookswap_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin          # Usuário do banco de dados
+      POSTGRES_PASSWORD: password   # Senha do banco de dados
+      POSTGRES_DB: bookswap         # Nome do banco de dados
+    ports:
+      - "5432:5432"                 # Porta de acesso ao banco
+    volumes:
+      - db_data:/var/lib/postgresql/data # Volume para persistir os dados do banco
+
+  redis:
+    image: redis:6
+    container_name: bookswap_redis
+    restart: always
+    ports:
+      - "6379:6379"                 # Porta de acesso ao Redis
+    command: ["redis-server", "--save", "60", "1", "--loglevel", "warning"] # Configuração opcional para logs mais enxutos
+
+volumes:
+  db_data:
+    driver: local                   # Volume local para persistir dados
